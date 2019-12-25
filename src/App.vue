@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-
+    <test></test>
   </div>
 </template>
 
 <script>
+
+
 
 export default {
   name: 'app',
@@ -15,4 +17,5 @@ export default {
 </script>
 
 <style>
+@import "assets/css/base.css";
 </style>
