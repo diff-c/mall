@@ -8,9 +8,18 @@
 
 <script>
 import NavBar from 'components/common/navbar/NavBar'
+import { getHomeMultidata } from 'network/home'
 export default {
   components: {
     NavBar
+  },
+  data() {
+    return {}
+  },
+  created() {
+    getHomeMultidata().then(res => {
+      console.log(res)
+    })
   }
 }
 </script>

@@ -1,7 +1,9 @@
 import axios from "axios";
 
 export function request(config) {
-  const instance = axios.create({});
+  const instance = axios.create({
+    baseURL: " http://123.207.32.32:8000"
+  });
 
   instance.interceptors.request.use(
     config => {
@@ -13,7 +15,7 @@ export function request(config) {
   );
 
   instance.interceptors.response.use(res => {
-    return res;
+    return res.data;
   });
 
   return instance(config);
