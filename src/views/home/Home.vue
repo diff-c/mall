@@ -3,14 +3,14 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll>
+    <scroll class="content">
       <HomeSwiper :banners="banners"></HomeSwiper>
       <recommend :recommends="recommends"></recommend>
       <feature-view></feature-view>
       <tab-control class='tab-control' :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
       <good-list :goods="showGoods"></good-list>
     </scroll>
-
+    <back-top @click.native="backClick" />
   </div>
 </template>
 
@@ -24,6 +24,7 @@ import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
+import BackTop from 'components/content/backTop/BackTop'
 
 import { getHomeMultidata, getHomeGoods } from 'network/home'
 
@@ -36,7 +37,8 @@ export default {
     NavBar,
     TabControl,
     GoodList,
-    Scroll
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -80,6 +82,10 @@ export default {
       }
 
     },
+    backClick() {
+      console.log('backClick');
+
+    },
 
     /**
      * 网络请求相关方法
@@ -108,6 +114,7 @@ export default {
 #home {
   padding-top: 44px;
   position: relative;
+  height: 100vh;
 }
 .home-nav {
   background-color: var(--color-tint);
@@ -121,5 +128,11 @@ export default {
 .tab-control {
   position: sticky;
   top: 44px;
+}
+.content {
+  position: absolute;
+  top: 11.73333vw;
+  bottom: 13.06667vw;
+  overflow: hidden;
 }
 </style>
