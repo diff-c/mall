@@ -25,6 +25,8 @@ export default {
   methods: {
     changeIndex(index) {
       this.currentIndex = index;
+      this.$emit('tabClick', index)
+
     }
   },
 }
@@ -32,6 +34,7 @@ export default {
 
 <style>
 .tab-control {
+  z-index: 10;
   display: flex;
   text-align: center;
   font-size: 15px;
