@@ -1,14 +1,11 @@
 <template>
-  <swiper>
-    <swiper-item v-for="item in banners" :key="item.link">
-      <a :href="item.link">
-        <img :src="item.image" alt="" @load.once="imageLoad">
-      </a>
+  <swiper class="detail-swiper">
+    <swiper-item v-for="item in topImages" :key="item">
+      <img :src="item" />
     </swiper-item>
   </swiper>
 
 </template>
-
 <script>
 import { Swiper, SwiperItem } from 'components/common/swiper'
 export default {
@@ -17,20 +14,23 @@ export default {
     SwiperItem
   },
   props: {
-    banners: {
+    topImages: {
       type: Array,
       default() {
         return []
       }
     }
   },
-  methods: {
-    imageLoad() {
-      this.$emit('swiperImageLoad')
-    }
-  },
+  name: "component_name",
+  data() {
+    return {
+    };
+  }
 }
 </script>
-
-<style>
+<style scoped>
+.detail-swiper {
+  height: 300px;
+  overflow: hidden;
+}
 </style>
