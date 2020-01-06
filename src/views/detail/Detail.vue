@@ -7,6 +7,8 @@
       <detail-shop-info :shops='shops'></detail-shop-info>
       <detail-goods-info :detailInfo="detailInfo" @imagesLoad="imagesLoad"></detail-goods-info>
       <detail-param-info :paramInfo="paramInfo"></detail-param-info>
+      <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
+      <goods-list :goods="recommendInfo"></goods-list>
     </scroll>
 
   </div>
@@ -22,8 +24,12 @@ import DetailBaseInfo from './childComps/DetailBaseInfo'
 import DetailShopInfo from './childComps/DetailShopInfo';
 import DetailGoodsInfo from './childComps/DetailGoodsInfo'
 import DetailParamInfo from './childComps/DetailParamInfo'
+import DetailCommentInfo from './childComps/DetailCommentInfo'
 
-import { getDetail, Goods, Shop, GoodsParam } from 'network/detail'
+import GoodsList from 'components/content/goods/GoodsList'
+
+import { getDetail, Goods, Shop, GoodsParam, getRecommend } from 'network/detail'
+import { debounce } from 'common/utils'
 
 
 import scroll from 'components/common/scroll/Scroll'
@@ -36,7 +42,9 @@ export default {
     DetailShopInfo,
     scroll,
     DetailGoodsInfo,
-    DetailParamInfo
+    DetailParamInfo,
+    DetailCommentInfo,
+    GoodsList
   },
   name: "Detail",
   data() {
@@ -46,7 +54,10 @@ export default {
       goods: {},
       shops: {},
       detailInfo: {},
-      paramInfo: {}
+      paramInfo: {},
+      commentInfo: {},
+      recommendInfo: [],
+
     };
   },
   created() {
@@ -59,7 +70,16 @@ export default {
       this.shops = new Shop(data.shopInfo)
       this.detailInfo = data.detailInfo
       this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
-    })
+      if (data.rate.list) {
+        this.commentInfo = data.rate.list[0]
+      }
+    }),
+
+      getRecommend().then(res => {
+        console.log(res.data.list);
+        this.recommendInfo = res.data.list
+
+      })
 
 
     // this.scroll.on('scroll', (position) => {
@@ -67,14 +87,31 @@ export default {
 
     // })
   },
+  // mounted() {
+  //   const refresh = debounce(this.$refs.scroll.refresh, 500)
+
+  //   this.$bus.$on('itemImageLoad', () => {
+  //     // this.$refs.scroll.refresh()
+  //     refresh()
+  //   })
+  // },
+  mixins: ['itemListenerMixin'],
+  mounted() {
+
+  },
+
+  destroyed() {
+    this.$bus.$off('itemImageLoad', this.itemListener)
+  },
   methods: {
     imageLoad() {
       this.$refs.scroll.refresh()
     },
     imagesLoad() {
       this.$refs.scroll.refresh()
-
     }
+
+
   }
 }
 </script>

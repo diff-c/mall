@@ -35,6 +35,10 @@ import BackTop from 'components/content/backTop/BackTop'
 import { getHomeMultidata, getHomeGoods } from 'network/home'
 import { debounce } from 'common/utils'
 
+
+import { itemListenerMixin } from 'common/mixin'
+
+
 export default {
   components: {
     HomeSwiper,
@@ -60,7 +64,7 @@ export default {
       isShow: false,
       tabOffsetTop: 0,
       tabControlFixed: false,
-      saveY: 0
+      saveY: 0,
     }
   },
   computed: {
@@ -78,16 +82,17 @@ export default {
 
 
   },
+  // mixins: ['itemListenerMixin'],
+  mixins: [itemListenerMixin],
   mounted() {
-    //3.监听item中图片加载完成
-    const refresh = debounce(this.$refs.scroll.refresh, 500)
-
-    this.$bus.$on('itemImageLoad', () => {
-      // this.$refs.scroll.refresh()
-      refresh()
-    })
   },
   activated() {
+    // const refresh = debounce(this.$refs.scroll.refresh, 50); // 每隔200ms再去调用refresh,如果上一次还未完成则清除上一次的200，再过200ms执行
+    // this.itemImageListener = () => {
+    //   refresh();
+    // };
+    // this.$bus.$on("itemImageLoad", this.itemImageListener);
+
     this.$refs.scroll.scrollTo(0, this.saveY, 0)
     this.$refs.scroll.refresh()
 
@@ -95,6 +100,7 @@ export default {
   deactivated() {
 
     this.saveY = this.$refs.scroll.getScrollY()
+    this.$bus.$off('itemImageLoad', this.itemListener)
   },
   methods: {
     /**
