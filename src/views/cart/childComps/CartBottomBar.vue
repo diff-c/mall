@@ -5,7 +5,7 @@
     <span class="checkAll">全选</span>
 
     <div class="price">合计:{{'￥' + getSum}}</div>
-    <div class="amount">去计算 ({{getAmount}}) </div>
+    <div class="total">去计算 ({{getAmount}}) </div>
   </div>
 
 </template>
@@ -21,7 +21,15 @@ export default {
   },
   methods: {
     checkClick() {
-      this.$store.state.cartList = 
+      if (this.selectAll) {
+        this.cartList.forEach(item => {
+          item.checked = false
+        })
+      } else {
+        this.cartList.forEach(item => {
+          item.checked = true
+        })
+      }
     }
   },
   computed: {
@@ -47,7 +55,12 @@ export default {
         return false
       }
 
+      //this.cartList.filter(item => !item.checked) 返回不是checked的数组对象，。length结果肯定有数，因为有没选中的，所以这个是不亮的
+
+
       return !(this.cartList.filter(item => !item.checked)).length
+
+      // return !(this.cartList.find(item => !item.checked)).length
     }
   }
 }
@@ -64,20 +77,21 @@ export default {
   line-height: 40px;
   align-items: center;
   font-size: 14px;
+  padding-left: 5px;
 }
 .check-button {
   width: 20px;
   height: 20px;
   line-height: 20px;
-  margin: 0 5px;
 }
 .checkAll {
+  margin-left: 10px;
   width: 60px;
 }
 .price {
   flex: 1;
 }
-.amount {
+.total {
   color: #fff;
   width: 90px;
   background-color: red;

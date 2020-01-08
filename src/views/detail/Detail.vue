@@ -36,6 +36,9 @@ import { debounce } from 'common/utils'
 import { itemListenerMixin, backTopMixin } from 'common/mixin'
 import scroll from 'components/common/scroll/Scroll'
 
+
+import { mapActions } from 'vuex'
+
 export default {
   components: {
     DetailNavBar,
@@ -168,8 +171,20 @@ export default {
 
       // this.$store.commit('addCart', product) mutations获取方式
       //actions获取方式
-      this.$store.dispatch('addCart', product)
-    }
+
+      this.addCart(product).then(res => {
+        console.log(res);
+
+      })
+
+      // this.$store.dispatch('addCart', product).then(res => {
+      //   console.log(res);
+
+      // })
+    },
+
+
+    ...mapActions(['addCart'])
 
 
   }
