@@ -36,7 +36,7 @@ import { getHomeMultidata, getHomeGoods } from 'network/home'
 import { debounce } from 'common/utils'
 
 
-import { itemListenerMixin } from 'common/mixin'
+import { itemListenerMixin, backTopMixin } from 'common/mixin'
 
 
 export default {
@@ -61,7 +61,6 @@ export default {
 
       },
       currentType: 'pop',
-      isShow: false,
       tabOffsetTop: 0,
       tabControlFixed: false,
       saveY: 0,
@@ -83,7 +82,7 @@ export default {
 
   },
   // mixins: ['itemListenerMixin'],
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   mounted() {
   },
   activated() {
@@ -124,10 +123,11 @@ export default {
     },
     contentScroll(position) {
       //1.显示隐藏箭头
-      this.isShow = (-position.y) > 1000
+      this.showArrow(position)
       //2.
       this.tabControlFixed = (-position.y) > this.tabOffsetTop
     },
+
     loadMore() {
       // console.log("上拉加载更多");
       this.getHomeGoods(this.currentType)

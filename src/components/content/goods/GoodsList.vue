@@ -26,7 +26,6 @@ export default {
 <style>
 .goods {
   padding: 0 5x;
-
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
